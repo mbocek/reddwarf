@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE decorators PUBLIC "-//OpenSymphony//SiteMesh 1.5 Decorators//EN" "http://www.opensymphony.com/sitemesh/dtd/sitemesh_1_5_decorators.dtd">
+<decorators defaultdir="/WEB-INF/layout">
+	<decorator name="main" page="main.jsp">
+		<pattern>/*</pattern>
+	</decorator>
+</decorators>

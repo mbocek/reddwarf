@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+		http://www.springframework.org/schema/beans	http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+
+	<import resource="classpath:/spring/transaction-config.xml"/>
+	
+	<!-- ================================================================= -->
+	<!-- Scans within the base package of the application for @Components  -->
+	<!-- to configure as beans                                             -->
+	<!-- ================================================================= -->
+	<context:component-scan base-package="org.reddwarf.util" />
+
+	<!-- ================================================================= -->
+	<!-- Startup service which can initialize data structures              -->
+	<!-- ================================================================= -->
+	<bean id="startUpService" class="org.reddwarf.service.startup.StartupServiceImpl" init-method="initialize">
+		<constructor-arg index="0" ref="transactionManager"/>
+	</bean> 
+</beans>
