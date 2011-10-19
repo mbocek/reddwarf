@@ -1,0 +1,18 @@
+#searchResult table {
+	width: 100%;
+} 
+
+#searchResult table td, #searchResult table th{
+	border-bottom: 1px solid black;
+	border-right: 1px solid black;
+}
+
+#searchResult .title {
+	font-weight: bold;
+}
+
+#searchResult .message {
+	font-weight: bold;
+	color: red;
+	padding:10px;
+}

@@ -16,34 +16,22 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.service.movie;
+package org.reddwarf.model.movie;
 
-import java.io.IOException;
-import java.util.List;
-
-import net.sf.jtmdb.GeneralSettings;
-import net.sf.jtmdb.Movie;
-
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import groovy.transform.ToString;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class TheMovieDBWrapper {
+@ToString
+public class MovieDTO {
 	
-	private static final Logger logger = LoggerFactory.getLogger(TheMovieDBWrapper.class);
+	String searchName;
+	List<Movie> searchResult;
 	
-	public TheMovieDBWrapper(String theMovieDBApiKey) {
-		GeneralSettings.setLogEnabled(true);
-		logger.debug("The movie db api key: {}", theMovieDBApiKey);
-		GeneralSettings.setApiKey(theMovieDBApiKey);
-		
-	}
-
-	public List<Movie> search(String movieName) throws IOException, JSONException {
-		return Movie.search(movieName);
+	def void clear() {
+		searchName = "";
+		searchResult = null;
 	}
 }

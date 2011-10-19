@@ -6,7 +6,7 @@
 	<artifactId>app</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>app</name>
+	<name>reddwarf</name>
 	
 	<dependencies>
 		<!-- Compile dependencies -->
@@ -59,6 +59,11 @@
 			<version>${spring.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>		
+		<dependency>
 		    <groupId>org.hibernate</groupId>
 		    <artifactId>hibernate-annotations</artifactId>
 		    <version>${hibernate.version}</version>
@@ -97,6 +102,11 @@
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20090211</version>
+		</dependency>
+		<dependency>
+			<groupId>net.sf.dozer</groupId>
+			<artifactId>dozer</artifactId>
+			<version>5.3.2</version>
 		</dependency>
 		
 		<!-- Container-provided dependencies-->
@@ -259,7 +269,7 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
+	<!-- <repositories>
 		<repository>
 			<id>jboss</id>
 			<url>http://repository.jboss.com/maven2/</url>
@@ -270,7 +280,7 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
-	</repositories>	
+	</repositories>-->	
 	<properties>
 		<spring.version>3.0.5.RELEASE</spring.version>
 		<spring-security.version>2.0.5.RELEASE</spring-security.version>

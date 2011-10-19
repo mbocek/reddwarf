@@ -16,34 +16,36 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.service.movie;
+package org.reddwarf.util;
 
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-import net.sf.jtmdb.GeneralSettings;
-import net.sf.jtmdb.Movie;
-
-import org.json.JSONException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dozer.DozerBeanMapperSingletonWrapper;
+import org.dozer.Mapper;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
-public class TheMovieDBWrapper {
-	
-	private static final Logger logger = LoggerFactory.getLogger(TheMovieDBWrapper.class);
-	
-	public TheMovieDBWrapper(String theMovieDBApiKey) {
-		GeneralSettings.setLogEnabled(true);
-		logger.debug("The movie db api key: {}", theMovieDBApiKey);
-		GeneralSettings.setApiKey(theMovieDBApiKey);
-		
-	}
+public class DTOConverter {
 
-	public List<Movie> search(String movieName) throws IOException, JSONException {
-		return Movie.search(movieName);
+	public static <T> T convert(Object source, Class<T> destinationCLass) {
+		Mapper instance = DozerBeanMapperSingletonWrapper.getInstance();
+		return instance.map(source, destinationCLass);
+	}
+	
+	public static <T, TT>List<T> convertList(List<TT> list, Class<T> destinationClass) { 
+		if (list != null) {
+			Mapper instance = DozerBeanMapperSingletonWrapper.getInstance();
+			List<T> result = new ArrayList<T>(list.size());
+			for (TT sourceObject : list) {
+				T destination = instance.map(sourceObject, destinationClass);
+				result.add(destination);
+			}
+			return result;
+		} else {
+			return null;
+		}		
 	}
 }

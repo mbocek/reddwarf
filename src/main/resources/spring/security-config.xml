@@ -9,6 +9,7 @@
 	<http auto-config="true">
 		<intercept-url pattern="/app/signin*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/app/welcome" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/app/movie" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/app/**" access="ROLE_USER, ROLE_ADMINISTRATOR" />
 		<form-login login-page="/app/users/signin" default-target-url="/" authentication-failure-url="/users/signin?login_error=1" />
 	</http>

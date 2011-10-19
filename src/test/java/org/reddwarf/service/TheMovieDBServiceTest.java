@@ -20,21 +20,16 @@ package org.reddwarf.service;
 
 import java.util.List;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import junit.framework.Assert;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.reddwarf.dao.RoleDao;
 import org.reddwarf.model.movie.Movie;
-import org.reddwarf.model.user.User;
 import org.reddwarf.service.movie.MovieInfoService;
-import org.reddwarf.service.movie.TheMovieDBInfoServiceImpl;
-import org.reddwarf.service.user.UserService;
 import org.reddwarf.test.SpringSecurityLoginExecutionListener;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.UsernameNotFoundException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -50,7 +45,8 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 		"classpath:/spring/service-config.xml", "classpath:/spring/utils-config.xml" })
 public class TheMovieDBServiceTest {
 
-	@Autowired
+	@Inject
+	@Named("theMovieDBService")
 	private MovieInfoService movieInfoService;
 
 	@Test

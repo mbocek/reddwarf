@@ -22,15 +22,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import net.sf.jtmdb.Genre;
 
 import org.json.JSONException;
 import org.reddwarf.model.movie.Movie;
-import org.reddwarf.service.startup.StartupServiceImpl;
-import org.reddwarf.util.CSVLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,13 +37,13 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Michal Bocek
  * @since 1.0.0
  */
-@Service
+@Service("theMovieDBService")
 @Transactional(readOnly = true)
 public class TheMovieDBInfoServiceImpl implements MovieInfoService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(TheMovieDBInfoServiceImpl.class);
 
-	@Autowired
+	@Inject
 	private TheMovieDBWrapper theMovieDBWrapper;
 
 	@Override
