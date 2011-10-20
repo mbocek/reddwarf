@@ -1,6 +1,6 @@
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="sec" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <div id="menu">
 	<span id="menuItem"><a href="<c:url value="/" />"><fmt:message key="header.menu.home"/></a></span>
 	<span id="menuItem"><a href="<c:url value="/movie/list" />"><fmt:message key="header.menu.movie"/></a></span>

@@ -1,4 +1,4 @@
-<%@ taglib uri="http://java.sun.com/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
@@ -28,7 +28,7 @@
 				<c:forEach var="movie" items="${movies.searchResult}">
 					<tr>
 						<td><span class="title" title="${movie.plot}">${movie.title}</span></td>
-						<td>${movie.release}</td>
+						<td><fmt:formatDate pattern="dd.MM.yyyy" value="${movie.release}" /></td>
 						<td>
 							<c:if test="${movie.imdbId != null}">
 							<a href="<fmt:message key="imdb.url"/>/${movie.imdbId}">${movie.imdbId}</a>
