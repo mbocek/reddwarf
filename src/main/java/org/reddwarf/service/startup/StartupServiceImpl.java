@@ -27,6 +27,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.reddwarf.model.movie.MovieQuality;
 import org.reddwarf.model.user.Role;
 import org.reddwarf.model.user.User;
 import org.reddwarf.util.CSVLoader;
@@ -61,6 +62,7 @@ public class StartupServiceImpl {
 	
 	private Collection<String> roleInfo;
 	private Collection<String> userInfo;
+	private Collection<String> movieQualityInfo;
 
 	public StartupServiceImpl(PlatformTransactionManager transactionManager) {
 		this.transactionTemplate = new TransactionTemplate(transactionManager);
@@ -74,6 +76,11 @@ public class StartupServiceImpl {
 		this.userInfo.add("userName");
 		this.userInfo.add("password");
 		this.userInfo.add("role");
+
+		this.movieQualityInfo = new ArrayList<String>();
+		this.movieQualityInfo.add("code");
+		this.movieQualityInfo.add("description");
+		this.movieQualityInfo.add("type");
 	}
 
 	protected void initialize() {
@@ -89,6 +96,13 @@ public class StartupServiceImpl {
 			@Override
 			public Object doInTransaction(TransactionStatus arg0) {
 				populateTestUsers();
+				return null;
+			}
+		});
+		transactionTemplate.execute(new TransactionCallback<Object>() {
+			@Override
+			public Object doInTransaction(TransactionStatus arg0) {
+				populateMovieQuality();
 				return null;
 			}
 		});
@@ -151,6 +165,57 @@ public class StartupServiceImpl {
 		SecurityContextHolder.getContext().setAuthentication(null);
 	}
 	
+	/* (non-Javadoc)
+	 * @see org.reddwarf.service.startup.Startup#populateData()
+	 */
+	public void populateMovieQuality() {
+		// login fake user
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken("preload", "preload"));
+		
+		// role data
+		Collection<Collection<String>> movieQualityDatas = csvLoader.load("startup-data/movieQuality.csv");
+		for (Collection<String> movieQualityData : movieQualityDatas) {
+			MovieQuality movieQuality = buildMovieQuality(movieQualityData);
+			Query query = entityManager.createQuery("from MovieQuality where code = :code").setParameter("code", movieQuality.getCode());
+			MovieQuality persistentMovieQuality = null;
+			try {
+				persistentMovieQuality = (MovieQuality) query.getSingleResult();
+			} catch (NoResultException e) {
+				logger.debug("Movie quality with id: " + movieQuality.getCode() + " doesn't exist's and will be created!");
+			}
+			if (persistentMovieQuality == null) {	
+				entityManager.persist(movieQuality);
+			} else {
+				logger.info("Movie quality with code: " + movieQuality.getCode() + " already exists!");
+			}
+		}
+		
+		// logout fake user
+		SecurityContextHolder.getContext().setAuthentication(null);
+	}
+	
+	private MovieQuality buildMovieQuality(Collection<String> movieQualityData) {
+		assert movieQualityData.size() == movieQualityInfo.size() : "Role datas are not complete... " + movieQualityData;
+		MovieQuality movieQuality = new MovieQuality();
+		Iterator<String> movieQualityDataIterator = movieQualityData.iterator();
+		Iterator<String> movieQualityInfoIterator = movieQualityInfo.iterator();
+		while (movieQualityInfoIterator.hasNext()) {
+			String fieldName = movieQualityInfoIterator.next(); 
+			String data = movieQualityDataIterator.next();
+			try {
+				if (fieldName.equals("code")) {
+					FieldUtils.setField(movieQuality, fieldName, String.valueOf(data));
+				} else {
+					FieldUtils.setField(movieQuality, fieldName, data);
+				}
+			} catch (Exception e) {
+				logger.warn("Can not set field: " + fieldName + "for class: " + movieQuality.getClass().getName(), e);
+			}
+
+		}
+		return movieQuality;
+	}
+
 	private Role buildRole(Collection<String> roleData) {
 		assert roleData.size() == roleInfo.size() : "Role datas are not complete... " + roleData;
 		Role role = new Role();

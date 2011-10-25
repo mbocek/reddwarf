@@ -20,7 +20,7 @@ package org.reddwarf.service.movie;
 
 import java.util.List;
 
-import org.reddwarf.model.movie.Movie;
+import org.reddwarf.model.movie.MovieInfo;
 
 /**
  * @author Michal Bocek
@@ -28,5 +28,5 @@ import org.reddwarf.model.movie.Movie;
  */
 public interface MovieInfoService {
 	
-	List<Movie> search(String movieName);
+	List<MovieInfo> search(String movieName);
 }

@@ -27,7 +27,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.reddwarf.model.movie.Movie;
+import org.reddwarf.model.movie.MovieInfo;
 import org.reddwarf.service.movie.MovieInfoService;
 import org.reddwarf.test.SpringSecurityLoginExecutionListener;
 import org.springframework.test.context.ContextConfiguration;
@@ -51,7 +51,7 @@ public class TheMovieDBServiceTest {
 
 	@Test
 	public void testTheMovieDbSearch() {
-		List<Movie> search = movieInfoService.search("Lord of the ring");
+		List<MovieInfo> search = movieInfoService.search("Lord of the ring");
 		Assert.assertNotNull(search);
 		Assert.assertTrue(search.size() > 0);
 	}

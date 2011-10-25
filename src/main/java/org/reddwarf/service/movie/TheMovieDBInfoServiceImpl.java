@@ -27,7 +27,7 @@ import javax.inject.Inject;
 import net.sf.jtmdb.Genre;
 
 import org.json.JSONException;
-import org.reddwarf.model.movie.Movie;
+import org.reddwarf.model.movie.MovieInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -47,24 +47,24 @@ public class TheMovieDBInfoServiceImpl implements MovieInfoService {
 	private TheMovieDBWrapper theMovieDBWrapper;
 
 	@Override
-	public List<Movie> search(String movieName) {
+	public List<MovieInfo> search(String movieName) {
 		logger.info("Searching TheMovieDB for: {}", movieName);
-		List<Movie> result = new ArrayList<Movie>();
+		List<MovieInfo> result = new ArrayList<MovieInfo>();
 		try {
 			List<net.sf.jtmdb.Movie> movies = theMovieDBWrapper.search(movieName);
 			if (movies != null) {
 				for (net.sf.jtmdb.Movie movie : movies) {
-					Movie myMovie = new Movie();
-					myMovie.setTitle(movie.getName());
-					myMovie.setId(movie.getID());
-					myMovie.setImdbId(movie.getImdbID());
-					myMovie.setImdbId(movie.getImdbID());
-					myMovie.setPlot(movie.getOverview());
-					myMovie.setRelease(movie.getReleasedDate());
+					MovieInfo myMovieInfo = new MovieInfo();
+					myMovieInfo.setTitle(movie.getName());
+					myMovieInfo.setId(movie.getID());
+					myMovieInfo.setImdbId(movie.getImdbID());
+					myMovieInfo.setImdbId(movie.getImdbID());
+					myMovieInfo.setPlot(movie.getOverview());
+					myMovieInfo.setRelease(movie.getReleasedDate());
 					for(Genre genre: movie.getGenres()) {
-						myMovie.addGenre(genre.getName());
+						myMovieInfo.addGenre(genre.getName());
 					}
-					result.add(myMovie);
+					result.add(myMovieInfo);
 				}
 			}
 		} catch (IOException e) {

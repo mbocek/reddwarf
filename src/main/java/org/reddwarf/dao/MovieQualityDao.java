@@ -16,22 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.model.movie;
+package org.reddwarf.dao;
 
-import groovy.transform.ToString;
+import org.reddwarf.model.movie.MovieQuality;
+
 
 /**
  * @author Michal Bocek
- * @since 1.0.0
  */
-@ToString
-public class MovieDTO {
-	
-	String searchName;
-	List<Movie> searchResult;
-	
-	def void clear() {
-		searchName = "";
-		searchResult = null;
-	}
+public interface MovieQualityDao extends GenericImmutableDao<MovieQuality, String>  {
 }

@@ -20,7 +20,7 @@ package org.reddwarf.dao.jpa;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityNotFoundException;
@@ -68,7 +68,7 @@ public abstract class GenericImmutableDaoJpa<T extends ImmutableEntity, Id exten
 	}
 
 	@SuppressWarnings("unchecked")
-	public Collection<T> findAll() {
+	public List<T> findAll() {
 		if (logger.isTraceEnabled()) {
 			logger.trace("Reading all entities");
 		}

@@ -1,18 +1,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <title><fmt:message key="screen.movie.title"/></title>
 <body>
 	<div id="search">
-		<form:form modelAttribute="movies" action="${pageContext.request.contextPath}/movie/find" method="POST">
-			<form:label path="searchName"><fmt:message key="screen.movie.label.searchName"/></form:label>
-			<form:input type="text" path="searchName" />
+		<form:form action="${pageContext.request.contextPath}/movie/find" method="POST">
+			<label for="search"><fmt:message key="screen.movie.label.searchName"/></label>
+			<input type="text" name="searchName" />
 			<input type="submit" value="<fmt:message key="screen.movie.input.search"/>" />
 		</form:form>
 	</div>
-	<c:if test="${movies != null && movies.searchResult != null}">
+	<c:if test="${movieDTO != null && movieDTO.searchResult != null}">
 	<div id="searchResult">
+		<br/>
+		<label for="search"><fmt:message key="screen.movie.label.selectedMovie"/></label><br/>
+		<form:errors path="movieDTO.selectedMovie" cssClass="errors"/>
 		<table>
 			<thead>
 				<tr>
@@ -22,20 +26,35 @@
 				</tr>
 			</thead>
 			<tbody>
-				<c:if test="${empty movies.searchResult}">
+				<c:if test="${empty movieDTO.searchResult}">
 					<div class="message"><fmt:message key="screen.movie.info.emptyList"/></div>
 				</c:if>
-				<c:forEach var="movie" items="${movies.searchResult}">
+				<c:if test="${!empty movieDTO.searchResult}">
+				<form:form  modelAttribute="movieDTO" action="${pageContext.request.contextPath}/movie/add" method="POST">
+					<c:forEach var="searchResult" items="${movieDTO.searchResult}">
 					<tr>
-						<td><span class="title" title="${movie.plot}">${movie.title}</span></td>
-						<td><fmt:formatDate pattern="dd.MM.yyyy" value="${movie.release}" /></td>
+						<td><form:radiobutton path="selectedMovie" value="${searchResult.id}"/><span class="title" title="${searchResult.plot}">${searchResult.title}</span></td>
+						<td><fmt:formatDate pattern="dd.MM.yyyy" value="${searchResult.release}" /></td>
 						<td>
-							<c:if test="${movie.imdbId != null}">
-							<a href="<fmt:message key="imdb.url"/>/${movie.imdbId}">${movie.imdbId}</a>
+							<c:if test="${searchResult.imdbId != null}">
+							<a href="<fmt:message key="imdb.url"/>/${searchResult.imdbId}">${searchResult.imdbId}</a>
 							</c:if>
 						</td>
 					</tr>
-				</c:forEach>
+					</c:forEach>
+					<tr>
+						<td colspan="3">
+						<label for="movieQuality"><fmt:message key="screen.movie.label.movieQuality"/></label><br/>
+						<form:errors path="movieQuality" cssClass="errors"/>
+						<form:select path="movieQuality">
+							<option value=""><fmt:message key="screen.movie.input.selectQuality"/></option>
+							<form:options items="${movieDTO.movieQualityList}" itemValue="code" itemLabel="description" />
+						</form:select>
+						<input type="submit" value="<fmt:message key="screen.movie.input.add"/>" />
+						</td>
+					</tr>
+				</form:form>
+				</c:if>
 			</tbody>
 		</table>
 	</div>

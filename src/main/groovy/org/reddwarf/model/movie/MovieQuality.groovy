@@ -16,32 +16,27 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.dao;
+package org.reddwarf.model.movie
 
-import java.io.Serializable;
-import java.util.List;
+import groovy.transform.ToString;
 
-import javax.persistence.EntityNotFoundException;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import org.reddwarf.model.ImmutableEntity;
 
 /**
- * Generic immutable dao interface. Interface is designed as generic class.
  * @author Michal Bocek
+ * @since 1.0.0
  */
-public interface GenericImmutableDao<T extends ImmutableEntity, Id extends Serializable> {
-
-	/**
-	 * Read entity identified with id. When entity doesn't exist the throw runtime exception.
-	 * @param id identifier
-	 * @return
-	 * @throws EntityNotFoundException
-	 */
-	T read(Id id) throws EntityNotFoundException;
-
-	/**
-	 * Get all entities. If mapped table id empty return empty list.
-	 * @return
-	 */
-	List<T> findAll();
+@Entity
+@ToString
+public class MovieQuality extends ImmutableEntity {
+	
+	@Id
+	String code;
+	
+	String description;
+	
+	String type;
 }

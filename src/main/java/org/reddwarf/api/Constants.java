@@ -16,32 +16,13 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.dao;
-
-import java.io.Serializable;
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
-import org.reddwarf.model.ImmutableEntity;
+package org.reddwarf.api;
 
 /**
- * Generic immutable dao interface. Interface is designed as generic class.
  * @author Michal Bocek
+ * @since 1.0.0
  */
-public interface GenericImmutableDao<T extends ImmutableEntity, Id extends Serializable> {
+public interface Constants {
 
-	/**
-	 * Read entity identified with id. When entity doesn't exist the throw runtime exception.
-	 * @param id identifier
-	 * @return
-	 * @throws EntityNotFoundException
-	 */
-	T read(Id id) throws EntityNotFoundException;
-
-	/**
-	 * Get all entities. If mapped table id empty return empty list.
-	 * @return
-	 */
-	List<T> findAll();
+	public static final String EMPTY_SELECTION = "-"; 
 }

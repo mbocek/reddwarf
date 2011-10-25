@@ -1,3 +1,4 @@
+package org.reddwarf.model.movie
 /*
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -16,7 +17,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.model.movie;
+
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import groovy.transform.ToString;
 
@@ -24,21 +27,10 @@ import groovy.transform.ToString;
  * @author Michal Bocek
  * @since 1.0.0
  */
+@Entity
 @ToString
-public class Movie {
+public class Movie extends MovieInfo {
 	
-	int id;	
-	String imdbId;	
-	String title;
-	String plot;
-	Date release;
-	List<String> genres;
-	
-	public Movie() {
-		this.genres = new ArrayList<String>();
-	}
-	
-	def addGenre(String name) {
-		genres.add(name);
-	}
+	@ManyToOne
+	MovieQuality movieQuality;
 }
