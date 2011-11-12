@@ -73,7 +73,5 @@ public class TheMovieDBInfoServiceImpl implements MovieInfoService {
 			logger.error("Wrong communitation!", e);
 		}
 		return result;
-	}
-	
-	
+	}	
 }

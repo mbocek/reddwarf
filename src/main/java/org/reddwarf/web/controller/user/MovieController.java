@@ -23,19 +23,18 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 
-import org.reddwarf.api.Constants;
 import org.reddwarf.dao.MovieQualityDao;
-import org.reddwarf.dto.movie.MovieDTO;
+import org.reddwarf.dto.movie.MovieSearchDTO;
 import org.reddwarf.model.movie.MovieInfo;
 import org.reddwarf.service.movie.MovieInfoService;
+import org.reddwarf.service.movie.MovieService;
 import org.reddwarf.service.movie.TheMovieDBInfoServiceImpl;
 import org.reddwarf.util.DTOConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.Validator;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,7 +47,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 @RequestMapping(value="/movie")
-@SessionAttributes("movieDTO")
+@SessionAttributes("movieSearchDTO")
 public class MovieController {
 
 	private static final Logger logger = LoggerFactory.getLogger(TheMovieDBInfoServiceImpl.class);
@@ -59,16 +58,19 @@ public class MovieController {
 	@Inject
 	private MovieQualityDao movieQualityDao;
 	
-    @Autowired
-    private Validator validator;
-    
+	@Inject
+	private MovieService movieService;
+	
 	@RequestMapping(value="/list", method = RequestMethod.GET)
 	public ModelAndView getMovies() {
-		return new ModelAndView("movie", "movieDTO", new MovieDTO());
+		ModelAndView modelAndView = new ModelAndView("movie", "movieSearchDTO", new MovieSearchDTO());
+		modelAndView.addObject("movieDTO", movieService.getMovies());
+		return modelAndView;
+		
 	}
 
 	@RequestMapping(value = "/find", method = RequestMethod.POST)
-	public String findMovie(@ModelAttribute("movieDTO") MovieDTO movie) {
+	public String findMovie(@ModelAttribute("movieSearchDTO") MovieSearchDTO movie, ModelMap model) {
 		logger.info("findMovie({})", movie.getSearchName());
 		
 		if (movie != null && movie.getSearchName() !=null && !movie.getSearchName().isEmpty()) {
@@ -76,13 +78,22 @@ public class MovieController {
 			movie.setSearchResult(DTOConverter.convertList(search, MovieInfo.class));
 			movie.setMovieQualityList(movieQualityDao.findAll());
 		} 
+		model.addAttribute("movieDTO", movieService.getMovies());
 		return "movie";
 	}
 	
 	@RequestMapping(value = "/add", method = RequestMethod.POST)
-	public String addMovie(@ModelAttribute("movieDTO") @Valid MovieDTO movie, BindingResult result) {
-		logger.info("addMovie({})", movie.getSelectedMovie());
+	public String addMovie(@ModelAttribute("movieSearchDTO") @Valid MovieSearchDTO movie, BindingResult result, ModelMap model) {
+		if (!result.hasErrors()) {
+			if (!movieService.checkIfAlreadyAdded(movie.getSelectedMovie())) {
+				logger.info("addMovie({})", movie.getSelectedMovie());
+				movieService.addMovie(movie);
+			} else {
+				logger.info("addMovie({}) already added", movie.getSelectedMovie());
+				result.reject("error.movie.alrearyAdded", "Movie already added!");
+			}
+		}
+		model.addAttribute("movieDTO", movieService.getMovies());
 		return "movie";
 	}
-	
 }

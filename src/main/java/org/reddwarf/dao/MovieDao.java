@@ -18,37 +18,11 @@
  */
 package org.reddwarf.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import org.reddwarf.model.movie.Movie;
 
-import javax.persistence.EntityNotFoundException;
-
-import org.reddwarf.model.ImmutableEntity;
 
 /**
- * Generic immutable dao interface. Interface is designed as generic class.
  * @author Michal Bocek
  */
-public interface GenericImmutableDao<T extends ImmutableEntity, Id extends Serializable> {
-
-	/**
-	 * Read entity identified with id. When entity doesn't exist the throw runtime exception.
-	 * @param id identifier
-	 * @return
-	 * @throws EntityNotFoundException
-	 */
-	T read(Id id) throws EntityNotFoundException;
-
-	/**
-	 * Get all entities. If mapped table id empty return empty list.
-	 * @return
-	 */
-	List<T> findAll();
-	
-	/**
-	 * Find entity by id. When entity can not be find return null.
-	 * @param id identifier
-	 * @return
-	 */
-	T findById(Id id);
+public interface MovieDao extends GenericDao<Movie, Integer>  {
 }

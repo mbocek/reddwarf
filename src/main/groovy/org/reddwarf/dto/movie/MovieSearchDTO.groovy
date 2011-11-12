@@ -16,39 +16,35 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.reddwarf.dao;
+package org.reddwarf.dto.movie;
 
-import java.io.Serializable;
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
-import javax.persistence.EntityNotFoundException;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.reddwarf.model.movie.MovieInfo;
+import org.reddwarf.model.movie.MovieQuality;
 
-import org.reddwarf.model.ImmutableEntity;
+import groovy.transform.ToString;
 
 /**
- * Generic immutable dao interface. Interface is designed as generic class.
  * @author Michal Bocek
+ * @since 1.0.0
  */
-public interface GenericImmutableDao<T extends ImmutableEntity, Id extends Serializable> {
-
-	/**
-	 * Read entity identified with id. When entity doesn't exist the throw runtime exception.
-	 * @param id identifier
-	 * @return
-	 * @throws EntityNotFoundException
-	 */
-	T read(Id id) throws EntityNotFoundException;
-
-	/**
-	 * Get all entities. If mapped table id empty return empty list.
-	 * @return
-	 */
-	List<T> findAll();
+@ToString
+public class MovieSearchDTO {
 	
-	/**
-	 * Find entity by id. When entity can not be find return null.
-	 * @param id identifier
-	 * @return
-	 */
-	T findById(Id id);
+	String searchName;
+	@NotNull
+	Integer selectedMovie;
+	List<MovieInfo> searchResult;
+	@NotNull
+	@NotEmpty
+	String movieQuality;
+	List<MovieQuality> movieQualityList;
+	
+	def void clear() {
+		searchName = "";
+		searchResult = null;
+		movieQuality = "";
+	}
 }

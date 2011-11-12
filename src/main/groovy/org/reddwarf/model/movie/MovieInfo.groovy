@@ -18,10 +18,13 @@
  */
 package org.reddwarf.model.movie;
 
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
+import groovy.transform.ToString
 
-import groovy.transform.ToString;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass
+
+import org.hibernate.annotations.CollectionOfElements;
+import org.reddwarf.model.MutableEntity
 
 /**
  * @author Michal Bocek
@@ -29,13 +32,15 @@ import groovy.transform.ToString;
  */
 @ToString
 @MappedSuperclass
-public class MovieInfo {
+public class MovieInfo extends MutableEntity {
 	
+	@Id
 	int id;	
 	String imdbId;	
 	String title;
 	String plot;
 	Date release;
+	@CollectionOfElements
 	List<String> genres;
 	
 	public MovieInfo() {

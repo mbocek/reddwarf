@@ -75,4 +75,13 @@ public abstract class GenericImmutableDaoJpa<T extends ImmutableEntity, Id exten
 		Query query = this.entityManager.createQuery("from " + this.persistentClass.getName());
 		return query.getResultList();
 	}
+
+	public T findById(Id id) {
+		if (logger.isTraceEnabled()) {
+			logger.trace("Finding entity for id: " + id);
+		}
+		T entry = this.entityManager.find(this.persistentClass, id);
+		return entry;
+	}
+
 }

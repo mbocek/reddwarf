@@ -18,14 +18,76 @@
  */
 package org.reddwarf.service.movie;
 
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.reddwarf.dao.MovieDao;
+import org.reddwarf.dao.MovieQualityDao;
+import org.reddwarf.dto.movie.MovieDTO;
+import org.reddwarf.dto.movie.MovieSearchDTO;
+import org.reddwarf.model.movie.Movie;
+import org.reddwarf.model.movie.MovieInfo;
+import org.reddwarf.model.movie.MovieQuality;
+import org.reddwarf.util.DTOConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Michal Bocek
  * @since 1.0.0
  */
 @Service
-public class MovieServiceImpl {
+@Transactional(readOnly = true)
+public class MovieServiceImpl implements MovieService {
 
+	private static final Logger logger = LoggerFactory.getLogger(MovieServiceImpl.class);
+
+	@Inject
+	private MovieDao movieDao;
 	
+	@Inject
+	private MovieQualityDao movieQualityDao;
+
+	/* (non-Javadoc)
+	 * @see org.reddwarf.service.movie.MovieService#addMovie(org.reddwarf.dto.movie.MovieDTO)
+	 */
+	@Override
+	@Transactional(readOnly = false)
+	public void addMovie(MovieSearchDTO movie) {
+		logger.info("addMovie({})", movie.getSelectedMovie());
+		MovieInfo movieInfo = getMovie(movie.getSearchResult(), movie.getSelectedMovie());
+		Movie movieToStore = DTOConverter.convert(movieInfo, Movie.class);
+		MovieQuality movieQuality = movieQualityDao.read(movie.getMovieQuality());
+		movieToStore.setMovieQuality(movieQuality);
+		movieDao.create(movieToStore);
+	}
+
+	@Override
+	public Boolean checkIfAlreadyAdded(Integer movieId) {
+		logger.info("(checkIfAlreadyAdded({})", movieId);
+		Movie movie = movieDao.findById(movieId);
+		return movie != null;
+	}
+
+	@Override
+	public List<MovieDTO> getMovies() {
+		logger.info("getMovies()");
+		List<Movie> findAll = movieDao.findAll();
+		logger.info("movie count: {}", findAll.size());
+		return DTOConverter.convertList(findAll, MovieDTO.class);
+	}
+
+	private MovieInfo getMovie(List<MovieInfo> movies, Integer selectedMovie) {
+		MovieInfo result = null;
+		for (MovieInfo movieInfo : movies) {
+			if (selectedMovie.equals(movieInfo.getId())) {
+				result = movieInfo;
+				break;
+			}
+		}
+		return result; 
+	}
 }

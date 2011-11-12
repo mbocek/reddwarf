@@ -18,6 +18,8 @@
  */
 package org.reddwarf.dto.movie;
 
+import java.util.Date;
+
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
@@ -32,19 +34,7 @@ import groovy.transform.ToString;
  */
 @ToString
 public class MovieDTO {
-	
-	String searchName;
-	@NotNull
-	Integer selectedMovie;
-	List<MovieInfo> searchResult;
-	@NotNull
-	@NotEmpty
-	String movieQuality;
-	List<MovieQuality> movieQualityList;
-	
-	def void clear() {
-		searchName = "";
-		searchResult = null;
-		movieQuality = "";
-	}
+	String title;
+	String plot;
+	Date release;
 }

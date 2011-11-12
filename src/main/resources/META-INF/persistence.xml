@@ -8,6 +8,8 @@
 		<class>org.reddwarf.model.user.User</class>
 		<class>org.reddwarf.model.user.Role</class>
 		<class>org.reddwarf.model.movie.MovieQuality</class>
+		<class>org.reddwarf.model.movie.Movie</class>
+		<class>org.reddwarf.model.movie.MovieInfo</class>
 		<exclude-unlisted-classes />
 		<properties>
 <!--			<property name="hibernate.show_sql" value="true" />-->
